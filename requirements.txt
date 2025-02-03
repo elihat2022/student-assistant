@@ -16,6 +16,7 @@ psycopg2==2.9.10
 celery[redis]==5.3.6
 kombu==5.4.2
 redis
+sendgrid
 
 # AWS/S3/R2
 boto3==1.36.11

@@ -216,7 +216,7 @@ RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 CRISPY_TEMPLATE_PACK = "tailwind"
-
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
 # # Celery setup (using redis)
 # REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")

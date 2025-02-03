@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import requests
-
+os
 from .models import Keywords, Transcription
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
@@ -126,13 +126,13 @@ def send_email(transcription_id):
     user = student.user
     email = user.email
     message = Mail(
-        from_email=config("SENDGRID_SENDER_EMAIL"),
+        from_email=os.getenv("SENDGRID_SENDER_EMAIL"),
         to_emails=email,
         subject="Transcription Completed",
         html_content=f"<strong> Hi {user.get_full_name()}, Your transcription is ready!",
     )
     try:
-        sg = SendGridAPIClient(config("SENDGRID_API_KEY"))
+        sg = SendGridAPIClient(os.getenv("SENDGRID_API_KEY"))
         response = sg.send(message)
         print(response.status_code)
         print(response.body)
