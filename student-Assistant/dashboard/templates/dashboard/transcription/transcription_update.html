@@ -1,0 +1,32 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load tailwind_filters %}
+{% block content %}
+<div class="container mx-auto p-1">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="md:px-6 px-3 md:mt-2 p-4 my-4 mx-2 flex flex-col justify-between rounded-3xl bg-blue-50">
+            <div class="flex items-center justify-between">
+                <h1 class="font-medium font-Open-Sans text-blue-600">UPDATE TOPIC</h1>
+                <button class="btn-primary" type="submit">
+                    <span class="material-symbols-outlined">save</span> Save
+                </button>
+            </div>
+            {{ form|crispy }}
+            <h2 class="font-medium">Highlights: </h2>
+            {{ treatment_formset.management_form }}
+            {% for form in treatment_formset %}
+            <div class="treatment-form mb-4">
+                {{ form|crispy }}
+                {% if form.instance.pk %}
+                    <input type="hidden" name="{{ form.prefix }}-id" value="{{ form.instance.pk }}">
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button class="ml-2 btn btn-sm btn-secondary text-white rounded-full" type="submit">
+                <span class="material-symbols-outlined">save</span> Save
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

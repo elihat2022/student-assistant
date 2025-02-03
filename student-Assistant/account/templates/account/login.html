@@ -1,0 +1,35 @@
+{% extends "dashboard/base.html" %} {% load static %} {% block content %}
+<div class="container m-2 mx-auto flex flex-col items-center">
+  <div class="mt-4 flex w-[50%] flex-col rounded-3xl bg-blue-50 p-4">
+    
+
+    <h2 class="font-Open-Sans text-lg font-medium">Login</h2>
+    <form method="post">
+      <div class="mt-2 mb-2 flex flex-col">
+        <input
+          class="mb-2 rounded-lg bg-white p-2"
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          class="mb-2 rounded-lg bg-white p-2"
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <button
+          type="submit"
+          class="btn-primary"
+        >
+          Login
+        </button>
+      </div>
+      {% csrf_token %}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

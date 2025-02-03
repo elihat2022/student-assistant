@@ -1,0 +1,81 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+    <title>{% block title%}{% endblock %}</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+</head>
+<body class="h-screen">
+
+    
+
+      <header class="bg-white shadow-sm">
+        <nav class="flex justify-between items-center w-[92%]  py-4 mx-auto z-100">
+            <div class="flex justify-start">
+                <a href="{% url 'recording' %}" class="text-xl font-bold  text-blue-600">AssistantMe</a>
+            </div>
+             {% if user.is_authenticated %}
+                <div class="ml-6 hidden md:flex items-center">
+                    <span class="px-1 text-sm font-medium text-gray-700">Welcome: {{user.username | title }}</span>
+                </div>
+                {% endif %}
+            <div>
+    <!-- User Profile -->
+               
+                
+                <div class="nav-links duration-500 md:static absolute bg-white md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto  w-full flex items-center px-5">
+                    <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
+                    {% if user.is_authenticated %}
+                        <li><a class="text-gray-600 transition-colors hover:text-blue-600" href="{% url 'recording' %}">Recording</a></li>
+                        <li><a class="text-gray-600 transition-colors hover:text-blue-600" href="{% url 'transcriptions' %}">Transcriptions</a></li>
+                        <li><a class="inline-block rounded-lg border border-blue-600 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white" href="{% url 'account:logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a class="inline-block rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 hover:text-white" " href="{% url 'account:register' %}">Register</a></li>
+                        <li><a class="inline-block rounded-lg border border-blue-600 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white" href="{% url 'account:login' %}">Login</a></li>
+                    {% endif %}  
+                    
+                    </ul>
+                </div>
+                <div class="flex items-center gap-6">
+                    
+                    <ion-icon onclick="onToggleMenu(this)" name="menu" class="text-3xl cursor-pointer md:hidden">
+                    <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <title>Mobile menu</title>
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+                    </svg>
+                    </ion-icon>
+                </div>
+            </div>
+            
+    </header>
+
+
+
+    <script>
+        const navLinks = document.querySelector('.nav-links')
+        function onToggleMenu(e){
+            e.name = e.name === 'menu' ? 'close' : 'menu'
+            navLinks.classList.toggle('top-[9%]')
+        }
+    </script>
+
+
+    {% block content %}
+    {% endblock %}
+
+
+</body>
+
+
+
+</html>

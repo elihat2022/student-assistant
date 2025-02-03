@@ -1,0 +1,124 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="container mx-auto mt-2">
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div class="md:px-6 px-3 md:mt-2 p-4  my-4 mx-5  flex flex-col justify-between rounded-3xl bg-blue-50">
+                
+                <div class="flex items-center justify-between">
+                    <h1 class="font-medium text-xl font-Open-Sans text-blue-600">{{ transcription.subject|title  }} </h1>
+                    <a class="btn-primary" href="{% url 'transcription_update' transcription.id %}">
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span> 
+                    Update </a>
+                </div>
+               
+                
+                <p class="text-sm mb-2">Created At: {{ transcription.created }}</p>
+                
+                
+                <p class="mb-2"><span class="font-medium"> Topic: </span>{{ transcription.name }}</p>
+                <p class="mb-2" ><span class="font-medium">Description:</span> {{ transcription.description }}</p>
+                <p class="font-medium">Highlights to study:</p>
+                <ul class="mb-2">
+                    {% for treatment in transcription.treatments.all %}
+                    <li class="ml-2"> - {{ treatment.description }}</li>
+                    {% endfor %}
+                </ul>
+                
+            </div>
+                
+            <div class="md:px-6 px-3 md:mt-2 p-4  my-4 mx-5  flex flex-col justify-between rounded-3xl bg-blue-50">
+                <p class="font-medium font-Open-Sans text-blue-600">RECORD INPUT</p>
+
+                <div class="flex items-center p-4 w-full rounded-md mt-2 ">
+                    <audio id="audio" src="{{ transcription.audio.url }}"></audio>
+                    <div class="pr-2">
+                        <button id="playPauseBtn" class="btn-play">
+                            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="glyph" height="glyph" viewBox="0 0 32 32" aria-hidden="true" class="w-[18px] h-[18px]"><path d="M7,28a1,1,0,0,1-1-1V5a1,1,0,0,1,1.4819-.8763l20,11a1,1,0,0,1,0,1.7525l-20,11A1.0005,1.0005,0,0,1,7,28Z"></path></svg>
+                        </button>
+                    </div>
+                   
+                    <div class="w-full mt-6">
+                        <input 
+                            id="progressBar"
+                            type="range"
+                            class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
+                            min="0"
+                            max="100"
+                            value="0"
+                        />
+                        <div class="flex justify-between text-sm text-gray-500 mt-1">
+                            <span id="currentTime">0:00</span>
+                            <span id="duration">0:00</span>
+                        </div>
+                    </div>
+               
+
+                </div>
+            </div>
+            <div class="md:px-6 px-3 md:mt-2 p-4  my-4 mx-5  flex flex-col justify-between rounded-3xl bg-teal-50">
+
+                <p class="font-medium font-Open-Sans text-green-600 mb-2 mt-2">TRANSCRIPTION</p>
+                <p class="mb-2">{{ transcription.transcription }}</p>
+
+                <a class="btn-danger" href="{% url 'transcription_delete' transcription.pk %}">Delete Case</a>
+            </div>
+            
+                
+          
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const audio = document.getElementById('audio');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+
+        function togglePlayPause() {
+            if (audio.paused) {
+                audio.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                audio.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+
+        function updateProgress() {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressBar.value = percent;
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+            durationEl.textContent = formatTime(audio.duration);
+        }
+
+        function setProgress() {
+            const time = (progressBar.value / 100) * audio.duration;
+            audio.currentTime = time;
+        }
+
+        function formatTime(time) {
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+            return `${minutes}:${seconds}`;
+        }
+
+        playPauseBtn.addEventListener('click', togglePlayPause);
+        audio.addEventListener('timeupdate', updateProgress);
+        progressBar.addEventListener('change', setProgress);
+
+        audio.addEventListener('loadedmetadata', function() {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+    });
+</script>
+
+{% endblock %}

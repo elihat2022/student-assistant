@@ -1,0 +1,235 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %} Audio Recorder {% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-1 flex flex-col items-center justify-center">
+    <div class=" flex flex-col justify-center px-6  p-3 my-4 mx-4 w-full  rounded-3xl bg-blue-50 min-h-[80vh]">
+        <h1 class="flex justify-center font-medium text-3xl font-Open-Sans text-blue-600">Create a New Recording</h1>
+
+        <div class="flex  justify-center items-center mt-3 mb-1">
+            <label class="font-medium" for="name">Topic:</label>
+            <input class="ml-2 w-[80vh] rounded-2xl pl-2 bg-white h-8" type="text" id="subject_name" name="subject_name" placeholder="English Class">
+        </div>
+
+        <div class="flex items-center justify-center mt-2 w-full" id="audioControls">
+            <button class="flex flex-row justify-center items-center gap-2 bg-green-500 w-45 pt-2 px-2 pb-2 h-10 rounded-3xl m-2 text-white  hover:bg-green-700 " id="recordButton">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 10L3 14M7.5 11V13M12 6V18M16.5 3V21M21 10V14" />
+                </svg>
+                Start Recording 
+            </button>
+            <button id="stopButton" class="hidden flex flex-row justify-center items-center gap-2 bg-red-500 w-40 pt-2 pb-2 h-10 rounded-xl m-2 text-white  hover:bg-red-700">
+                <i class="fa fa-stop" aria-hidden="true"></i> Stop Recording
+            </button>
+            <button  class="hidden flex flex-row justify-center items-center gap-2 bg-blue-500 w-40 pt-2 pb-2 pr-4 pl-4  rounded-xl m-2 text-white  hover:bg-blue-700 disabled:bg-gray-300" id="submitButton" disabled>
+                <i class="fa fa-paper-plane" aria-hidden="true"></i> Send
+            </button>
+        </div>
+    </div> 
+
+    <div id="audioContainer" style="display:none;" class=" px-3 p-4 my-4 mx-2 w-full flex flex-col justify-between rounded-3xl bg-blue-50">
+        <p class="font-medium font-Open-Sans text-blue-600">RECORDED INPUT</p>
+
+        <div class="flex items-center p-4 w-full rounded-md mt-2">
+            <audio id="audioPlayback" controls style="display:none;"></audio>
+            <div class="pr-2">
+                <button id="playPauseBtn" class="btn-play">
+                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="glyph" height="glyph" viewBox="0 0 32 32" aria-hidden="true" class="w-[18px] h-[18px]"><path d="M7,28a1,1,0,0,1-1-1V5a1,1,0,0,1,1.4819-.8763l20,11a1,1,0,0,1,0,1.7525l-20,11A1.0005,1.0005,0,0,1,7,28Z"></path></svg>
+                </button>
+            </div>
+
+            <div class="w-full mt-6">
+                <input 
+                    id="progressBar"
+                    type="range"
+                    class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
+                    min="0"
+                    max="100"
+                    value="0"
+                />
+                <div class="flex justify-between text-sm text-gray-500 mt-1">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+            <div id="loading" style="display: none;" class="mt-4">
+                <span class="loading loading-spinner loading-sm"></span>
+                <h2 class="font-medium font-Open-Sans text-blue-600">Sending</h2>
+            </div>
+        </div>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<!-- Scripts -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const audio = document.getElementById('audioPlayback');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+
+        function togglePlayPause() {
+            if (audio.paused) {
+                audio.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                audio.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+
+        function updateProgress() {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressBar.value = percent;
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+            durationEl.textContent = formatTime(audio.duration);
+        }
+
+        function setProgress() {
+            const time = (progressBar.value / 100) * audio.duration;
+            audio.currentTime = time;
+        }
+
+        function formatTime(time) {
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+            return `${minutes}:${seconds}`;
+        }
+
+        playPauseBtn.addEventListener('click', togglePlayPause);
+        audio.addEventListener('timeupdate', updateProgress);
+        progressBar.addEventListener('change', setProgress);
+
+        audio.addEventListener('loadedmetadata', function() {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+    });
+</script>
+
+<!-- Añadir RecordRTC -->
+<script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
+
+<script>
+    let recorder;
+    let stream;
+
+    document.getElementById('recordButton').onclick = startRecording;
+    document.getElementById('stopButton').onclick = stopRecording;
+
+    async function startRecording() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            recorder = RecordRTC(stream, {
+                type: 'audio',
+                mimeType: 'audio/wav',
+                recorderType: RecordRTC.StereoAudioRecorder,
+                numberOfAudioChannels: 1,
+                desiredSampRate: 16000,
+            });
+
+            recorder.startRecording();
+
+            // Mostrar botón "Stop" y ocultar botón "Record"
+            document.getElementById('stopButton').classList.remove('hidden');
+            document.getElementById('recordButton').classList.add('hidden');
+
+            // Asegurar que el botón "Send" esté oculto
+            document.getElementById('submitButton').classList.add('hidden');
+            document.getElementById('submitButton').disabled = true;
+        } catch (error) {
+            console.error('Error accessing the microphone:', error);
+            alert('Error accessing the microphone. Please ensure you have given permission.');
+        }
+    }
+
+    function stopRecording() {
+        recorder.stopRecording(() => {
+
+            // Ocultar botón "Stop" y mantener oculto el botón "Record"
+            document.getElementById('stopButton').classList.add('hidden');
+            document.getElementById('recordButton').classList.add('hidden');
+
+            // Mostrar el botón "Send" y habilitarlo
+            document.getElementById('submitButton').classList.remove('hidden');
+            document.getElementById('submitButton').disabled = false;
+
+            let blob = recorder.getBlob();
+
+            // Detener todos los tracks del stream
+            stream.getTracks().forEach(track => track.stop());
+
+            // Crear URL para reproducción
+            const audioURL = URL.createObjectURL(blob);
+            const audio = document.getElementById('audioPlayback');
+            audio.src = audioURL;
+            const audio_container = document.getElementById('audioContainer');
+            audio_container.style.display = 'block';
+
+            // Manejar errores de reproducción
+            audio.onerror = function(e) {
+                console.error('Error loading audio:', e);
+                alert('Error al cargar el audio. Por favor, intente nuevamente.');
+            };
+
+            // Asignar la función de envío al botón "Send"
+            document.getElementById('submitButton').onclick = () => sendAudio(blob);
+        });
+    }
+
+    function sendAudio(audioBlob) {
+        const formData = new FormData();
+        const fileName = `recording-${Date.now()}.wav`;
+
+        const subject_name = document.getElementById('subject_name').value;
+
+        formData.append('voice_input', audioBlob, fileName);
+        formData.append('subject_name', subject_name);
+        document.getElementById('result').textContent = '';
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('submitButton').disabled = true;
+
+        fetch("{% url 'recording' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            // Si la respuesta incluye una URL de redirección, seguirla
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                // Ocultar indicador de carga
+                document.getElementById('loading').style.display = 'none';
+
+                // Restablecer la interfaz para permitir nueva grabación
+                document.getElementById('submitButton').classList.add('hidden');
+                document.getElementById('submitButton').disabled = true;
+                document.getElementById('recordButton').classList.remove('hidden');
+                document.getElementById('subject_name').value = '';
+                document.getElementById('audioContainer').style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al procesar el audio. Por favor, intente nuevamente.');
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('submitButton').disabled = false;
+        });
+    }
+</script>
+{% endblock %}
