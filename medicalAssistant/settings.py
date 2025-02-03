@@ -20,38 +20,14 @@ import sys
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Función para verificar variables de entorno críticas
-def check_critical_env_vars():
-    critical_vars = {
-        'SECRET_KEY': None,
-        'PGDATABASE': None,
-        'PGUSER': None,
-        'PGPASSWORD': None,
-        'PGHOST': None,
-        'PGPORT': None,
-    }
-    
-    missing = []
-    for var in critical_vars:
-        try:
-            value = config(var)
-            if not value:
-                missing.append(var)
-        except:
-            missing.append(var)
-    
-    if missing:
-        print("ERROR: Missing critical environment variables:", missing)
-        sys.exit(1)
 
 
 
 # Configuración básica
-SECRET_KEY = config('SECRET_KEY', default='your-secret-key-for-development')
-DEBUG = config('DEBUG', default=False, cast=bool)
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = False
 
-# Verificar variables críticas en producción
-if not DEBUG:
-    check_critical_env_vars()
+
     
 ALLOWED_HOSTS = ["*"]
 
@@ -126,11 +102,11 @@ WSGI_APPLICATION = 'medicalAssistant.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config("PGDATABASE"),
-        'USER': config("PGUSER"),
-        'PASSWORD': config("PGPASSWORD"),
-        'HOST': config("PGHOST"),
-        'PORT': config("PGPORT"),
+        'NAME': os.getenv("PGDATABASE"),
+        'USER': os.getenv("PGUSER"),
+        'PASSWORD': os.getenv("PGPASSWORD"),
+        'HOST': os.getenv("PGHOST"),
+        'PORT': os.getenv("PGPORT"),
     }
 }
 
@@ -178,10 +154,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-CLOUDFLARE_R2_BUCKET=config('CLOUDFLARE_R2_BUCKET')
-CLOUDFLARE_R2_ACCESS_KEY=config('CLOUDFLARE_R2_ACCESS_KEY')
-CLOUDFLARE_R2_SECRET_KEY=config('CLOUDFLARE_R2_SECRET_KEY')
-CLOUDFLARE_R2_ENDPOINT=config('CLOUDFLARE_R2_ENDPOINT')
+CLOUDFLARE_R2_BUCKET=os.getenv('CLOUDFLARE_R2_BUCKET')
+CLOUDFLARE_R2_ACCESS_KEY=os.getenv('CLOUDFLARE_R2_ACCESS_KEY')
+CLOUDFLARE_R2_SECRET_KEY=os.getenv('CLOUDFLARE_R2_SECRET_KEY')
+CLOUDFLARE_R2_ENDPOINT=os.getenv('CLOUDFLARE_R2_ENDPOINT')
 
 # #Config R2
 
@@ -229,13 +205,13 @@ STORAGES = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Replicate
-REPLICATE_API_TOKEN= config('REPLICATE_API_TOKEN')
+REPLICATE_API_TOKEN= os.getenv('REPLICATE_API_TOKEN')
 # OpenAI
-OPENAI_API_KEY= config('OPENAI_API_KEY')
+OPENAI_API_KEY= os.getenv('OPENAI_API_KEY')
 
 
-RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
-RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
