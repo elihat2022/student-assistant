@@ -1,16 +1,19 @@
 [phases.setup]
 nixPkgs = [
-    "python311",  # No necesitas "python311Packages.pip", ya que el venv se crea solo
-    "nodejs_20"
+    "python311",   # Instala Python 3.11
+    "nodejs_20"    # Instala Node.js si necesitas manejar assets estáticos con npm
 ]
 
 [phases.install]
 cmds = [
-    "pip install -r requirements.txt"
+    "pip install --upgrade pip",         # Asegura que pip esté actualizado
+    "pip install -r requirements.txt"    # Instala dependencias
 ]
 
 [phases.build]
 cmds = [
-    "npm run build",
     "python manage.py collectstatic --noinput"
 ]
+
+[start]
+cmd = "python manage.py migrate && gunicorn medicalAssistant.wsgi:application --bind 0.0.0.0:8000"
