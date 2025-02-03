@@ -2,31 +2,22 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Actualizar pip
 RUN pip install --no-cache-dir --upgrade pip
 
-# Copiar requirements e instalar dependencias
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el código
 COPY . .
 
-# Variables de entorno
 ENV PYTHONUNBUFFERED=1
-ENV PORT=8000
+ENV PORT=8080  
 
-# Puerto
 EXPOSE $PORT
 
-# Script de inicio
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-CMD ["/start.sh"]
+# Fix the CMD line
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "medicalAssistant.wsgi:application"]
