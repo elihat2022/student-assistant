@@ -1,15 +1,13 @@
 [phases.setup]
 nixPkgs = [
-    "python311Full",
+    "python311",  # No necesitas "python311Packages.pip", ya que el venv se crea solo
     "nodejs_20"
 ]
 
-
 [phases.install]
 cmds = [
-    "python -m ensurepip --default-pip",
-    "python -m pip install --upgrade pip",
-    "pip install -r requirements.txt"
+    "/opt/venv/bin/pip install --upgrade pip",
+    "/opt/venv/bin/pip install -r requirements.txt"
 ]
 
 [phases.build]
