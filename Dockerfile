@@ -10,15 +10,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Instalar dependencias de Node.js
-COPY package*.json .
-RUN npm ci
-
-# Copiar el resto del código
-COPY . .
-
-# Construir assets
-RUN npm run build
 
 # Collectstatic
 RUN python manage.py collectstatic --noinput
