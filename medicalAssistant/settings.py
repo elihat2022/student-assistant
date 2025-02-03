@@ -214,7 +214,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 
 
-# Celery setup (using redis)
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+# # Celery setup (using redis)
+# REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 
-CELERY_BROKER_URL = CELERY_RESULT_BACKEND = REDIS_URL
+# CELERY_BROKER_URL = CELERY_RESULT_BACKEND = REDIS_URL
