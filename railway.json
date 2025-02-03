@@ -5,8 +5,23 @@
     "dockerfilePath": "Dockerfile"
   },
   "deploy": {
-    "startCommand": "gunicorn medicalAssistant.wsgi:application",
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 5
+    "restartPolicyMaxRetries": 5,
+    "envVarKeys": [
+      "SECRET_KEY",
+      "PGDATABASE",
+      "PGUSER",
+      "PGPASSWORD",
+      "PGHOST",
+      "PGPORT",
+      "CLOUDFLARE_R2_BUCKET",
+      "CLOUDFLARE_R2_ACCESS_KEY",
+      "CLOUDFLARE_R2_SECRET_KEY",
+      "CLOUDFLARE_R2_ENDPOINT",
+      "REPLICATE_API_TOKEN",
+      "OPENAI_API_KEY",
+      "RECAPTCHA_PUBLIC_KEY",
+      "RECAPTCHA_PRIVATE_KEY"
+    ]
   }
 }

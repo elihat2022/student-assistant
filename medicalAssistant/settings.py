@@ -12,19 +12,47 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+from decouple import Csv
+import sys
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Función para verificar variables de entorno críticas
+def check_critical_env_vars():
+    critical_vars = {
+        'SECRET_KEY': None,
+        'PGDATABASE': None,
+        'PGUSER': None,
+        'PGPASSWORD': None,
+        'PGHOST': None,
+        'PGPORT': None,
+    }
+    
+    missing = []
+    for var in critical_vars:
+        try:
+            value = config(var)
+            if not value:
+                missing.append(var)
+        except:
+            missing.append(var)
+    
+    if missing:
+        print("ERROR: Missing critical environment variables:", missing)
+        sys.exit(1)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# Configuración básica
+SECRET_KEY = config('SECRET_KEY', default='your-secret-key-for-development')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
+# Verificar variables críticas en producción
+if not DEBUG:
+    check_critical_env_vars()
+    
 ALLOWED_HOSTS = ["*"]
 
 
