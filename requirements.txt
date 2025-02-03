@@ -19,7 +19,7 @@ django-browser-reload==1.17.0
 django-crispy-forms==2.3
 django-recaptcha==4.0.0
 django-storages==1.14.4
-gunicorn==23.0.0
+
 h11==0.14.0
 httpcore==1.0.7
 httpx==0.28.1
@@ -55,3 +55,4 @@ wcwidth==0.2.13
 whitenoise==6.8.2
 celery[redis]==5.3.6
 honcho
+gunicorn
