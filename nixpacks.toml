@@ -1,0 +1,25 @@
+[phases.setup]
+aptPkgs = ['python3', 'python3-pip', 'nodejs', 'npm']
+nixPkgs = [
+    "python311",
+    "python311Packages.pip",
+    "nodejs_20"
+]
+
+[phases.install]
+dependsOn = ['setup']
+cmds = [
+    "python3 -m pip install --upgrade pip",
+    "python3 -m pip install -r requirements.txt",
+    "npm ci"
+]
+
+[phases.build]
+dependsOn = ['install']
+cmds = [
+    "npm run build",
+    "python3 manage.py collectstatic --noinput"
+]
+
+[start]
+cmd = "python3 manage.py migrate && gunicorn medicalAssistant.wsgi:application --bind 0.0.0.0:$PORT"
