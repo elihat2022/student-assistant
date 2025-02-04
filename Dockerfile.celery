@@ -1,20 +1,21 @@
-# Dockerfile.celery (actualizado)
-FROM python:3.11-slim
-
-WORKDIR /app
-
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    redis-tools \  
-    && rm -rf /var/lib/apt/lists/*
-
-RUN pip install --no-cache-dir --upgrade pip
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
+FROM python:3.11-bullseye
 ENV PYTHONUNBUFFERED=1
-# Mejora en los timeouts para entornos en la nube
-CMD ["celery", "-A", "medicalAssistant", "worker", "--loglevel=info", "--without-heartbeat", "--without-gossip", "--without-mingle"]
+
+# create code directory
+RUN mkdir /code
+WORKDIR /code
+
+# install python requirements
+RUN pip install --upgrade pip
+
+# copy just requirements and install before rest of code to avoid having to
+# reinstall packages during build every time code changes
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+RUN useradd -ms /bin/bash celery
+
+# copy code files
+COPY . /code/
+
+RUN chown -R celery:celery /code
