@@ -4,6 +4,10 @@
     "builder": "DOCKERFILE",
     "dockerfilePath": "Dockerfile"
   },
+  "worker": {
+    "dockerfilePath": "Dockerfile.celery",
+    "startCommand": "celery -A medicalAssistant worker --loglevel=info"
+  },
   "deploy": {
     "numReplicas": 1,
     "startCommand": "gunicorn --bind 0.0.0.0:8080 medicalAssistant.wsgi:application",

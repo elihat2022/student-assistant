@@ -225,8 +225,20 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
 # # Celery setup (using redis)
-# REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 
-# CELERY_BROKER_URL = CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_BROKER_URL = CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+
+
 
 CSRF_TRUSTED_ORIGINS = ["http://*","https://student-assistant-production.up.railway.app"]
+
+SECURE_HSTS_SECONDS = 3_154_000  # ~1 año
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
