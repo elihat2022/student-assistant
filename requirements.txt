@@ -1,42 +1,57 @@
-# Django y extensiones
+amqp==5.3.1
+annotated-types==0.7.0
+anyio==4.8.0
+asgiref==3.8.1
+billiard==4.2.1
+boto3==1.36.11
+botocore==1.36.11
+celery==5.4.0
+certifi==2024.12.14
+charset-normalizer==3.4.1
+click==8.1.8
+click-didyoumean==0.3.1
+click-plugins==1.1.1
+click-repl==0.3.0
+crispy-tailwind==1.0.3
+distro==1.9.0
+dj-database-url==2.3.0
 Django==5.1.4
 django-browser-reload==1.17.0
 django-crispy-forms==2.3
-crispy-tailwind==1.0.3
 django-recaptcha==4.0.0
 django-storages==1.14.4
-python-decouple==3.8
-whitenoise==6.8.2
-gunicorn
-
-# Base de datos
-psycopg2==2.9.10
-
-# Celery y Redis
-celery[redis]==5.3.6
+gunicorn==23.0.0
+h11==0.14.0
+httpcore==1.0.7
+httpx==0.28.1
+idna==3.10
+jiter==0.8.2
+jmespath==1.0.1
 kombu==5.4.2
-redis
-sendgrid
-
-# AWS/S3/R2
-boto3==1.36.11
-botocore==1.36.11
-s3transfer==0.11.2
-
-# Utilidades
-Pillow==11.1.0
+openai==1.59.5
+packaging==24.2
+pillow==11.1.0
+prompt_toolkit==3.0.48
+psycopg2==2.9.10
 pydantic==2.10.4
+pydantic_core==2.27.2
+pydub==0.25.1
+python-dateutil==2.9.0.post0
+python-decouple==3.8
+python-dotenv==1.0.1
+python-http-client==3.3.7
 replicate==1.0.4
 requests==2.32.3
-urllib3==2.3.0
-honcho
-
-# OpenAI
-openai==1.59.5
-
-# Dependencias básicas
-asgiref==3.8.1
+s3transfer==0.11.2
+sendgrid==6.11.0
+six==1.17.0
+sniffio==1.3.1
 sqlparse==0.5.3
+starkbank-ecdsa==2.2.0
+tqdm==4.67.1
 typing_extensions==4.12.2
 tzdata==2024.2
-dj-database-url
+urllib3==2.3.0
+vine==5.1.0
+wcwidth==0.2.13
+whitenoise==6.8.2
