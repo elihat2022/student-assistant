@@ -4,14 +4,14 @@
     "builder": "DOCKERFILE",
     "dockerfilePath": "Dockerfile"
   },
-  "worker": {
-    "dockerfilePath": "Dockerfile.celery",
-    "startCommand": "celery -A medicalAssistant worker --loglevel=info"
-  },
-  "deploy": {
-    "numReplicas": 1,
-    "startCommand": "gunicorn --bind 0.0.0.0:8080 medicalAssistant.wsgi:application",
-    "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 5
+  "service": {
+    "web": {
+      "dockerfilePath": "Dockerfile",
+      "startCommand": "gunicorn --bind 0.0.0.0:$PORT medicalAssistant.wsgi:application"
+    },
+    "worker": {
+      "dockerfilePath": "Dockerfile.celery",
+      "startCommand": "celery -A medicalAssistant worker --loglevel=info"
+    }
   }
 }
