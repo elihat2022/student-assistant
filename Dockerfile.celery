@@ -19,3 +19,5 @@ RUN useradd -ms /bin/bash celery
 COPY . /code/
 
 RUN chown -R celery:celery /code
+
+CMD ["celery", "-A", "medicalAssistant", "worker", "--loglevel=info"]
