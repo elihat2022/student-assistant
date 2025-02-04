@@ -14,8 +14,10 @@ from pathlib import Path
 from decouple import config
 from decouple import Csv
 import sys
+from dotenv import load_dotenv
+load_dotenv()
 
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -109,6 +111,10 @@ DATABASES = {
         'PORT': os.getenv("PGPORT"),
     }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(default=os.getenv("DATABASE_URL"), conn_max_age=500)
+# }
 
 
 
@@ -222,3 +228,5 @@ SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 # REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 
 # CELERY_BROKER_URL = CELERY_RESULT_BACKEND = REDIS_URL
+
+CSRF_TRUSTED_ORIGINS = ["http://*","https://student-assistant-production.up.railway.app"]
