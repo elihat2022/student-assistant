@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django_recaptcha',
     'crispy_forms',
     "crispy_tailwind",
-    #"django_browser_reload",
+    "django_browser_reload",
     
 
 ]

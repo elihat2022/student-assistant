@@ -1,0 +1,10 @@
+@import "tailwindcss";
+.btn-primary{
+    @apply flex flex-row justify-center items-center gap-2 bg-blue-500 w-auto pt-2 pb-2 pr-4 pl-4  rounded-3xl m-2 text-white  hover:bg-blue-700 disabled:bg-gray-300
+}
+.btn-danger{
+    @apply flex flex-row justify-center items-center gap-2 bg-red-500 w-auto pt-2 pb-2 pr-4 pl-4  rounded-3xl m-2 text-white hover:bg-red-700
+}
+.btn-play{
+   @apply w-12 h-12 rounded-4xl  flex justify-center items-center bg-blue-500 hover:bg-blue-700 text-white
+}
