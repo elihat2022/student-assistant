@@ -1,27 +1,26 @@
 FROM python:3.11-bullseye
 ENV PYTHONUNBUFFERED=1
 
-# create code directory
+# Crear directorio de trabajo
 RUN mkdir /code
 WORKDIR /code
 
-# install python requirements
+# Instalar dependencias
 RUN pip install --upgrade pip
 
-# copy just requirements and install before rest of code to avoid having to
-# reinstall packages during build every time code changes
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-RUN useradd -ms /bin/bash celery
-
-# copy code files
-COPY . /code/
-
+# Crear usuario celery con permisos adecuados
+RUN useradd --create-home --shell /bin/bash celery
 RUN chown -R celery:celery /code
+
+# Cambiar al usuario celery
 USER celery
 
+# HEALTHCHECK para evitar que Railway lo reinicie
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s \
   CMD celery -A medicalAssistant inspect ping || exit 1
-  
+
+# Ejecutar Celery con menos carga
 CMD ["celery", "-A", "medicalAssistant", "worker", "--loglevel=info", "--concurrency=4"]
