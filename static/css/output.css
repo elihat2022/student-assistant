@@ -1002,6 +1002,12 @@
   .h-\[30vh\] {
     height: 30vh;
   }
+  .h-\[35vh\] {
+    height: 35vh;
+  }
+  .h-\[40vh\] {
+    height: 40vh;
+  }
   .h-\[100px\] {
     height: 100px;
   }
@@ -3533,6 +3539,11 @@
   .md\:min-h-fit {
     @media (width >= 48rem) {
       min-height: fit-content;
+    }
+  }
+  .md\:w-1\/2 {
+    @media (width >= 48rem) {
+      width: calc(1/2 * 100%);
     }
   }
   .md\:w-\[70\%\] {
