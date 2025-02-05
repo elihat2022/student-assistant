@@ -14,6 +14,8 @@ from openai import OpenAI
 from .forms import MedicHistoryForm, Subject, TreatmentFormSet
 from .models import Subject, Transcription
 from .tasks import transcribe_audio
+from django_ratelimit.decorators import ratelimit
+
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
@@ -21,7 +23,7 @@ client = OpenAI(api_key=settings.OPENAI_API_KEY)
 def home(request):
     return render(request, "dashboard/home.html")
 
-
+@ratelimit(key='user_ip', rate='50/d')
 @login_required(login_url="/account/login")
 def Record_View(request):
     if request.method == "POST":

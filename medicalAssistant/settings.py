@@ -100,6 +100,7 @@ WSGI_APPLICATION = 'medicalAssistant.wsgi.application'
 #     }
 # }
 
+# FOR PRODUCTION
 
 DATABASES = {
     'default': {
@@ -111,6 +112,8 @@ DATABASES = {
         'PORT': os.getenv("PGPORT"),
     }
 }
+
+# # FOR DEBUG
 
 # DATABASES = {
 #     'default': dj_database_url.config(default=os.getenv("DATABASE_URL"), conn_max_age=500)
@@ -160,6 +163,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+# FOR PRODUCTION
 CLOUDFLARE_R2_BUCKET=os.getenv('CLOUDFLARE_R2_BUCKET')
 CLOUDFLARE_R2_ACCESS_KEY=os.getenv('CLOUDFLARE_R2_ACCESS_KEY')
 CLOUDFLARE_R2_SECRET_KEY=os.getenv('CLOUDFLARE_R2_SECRET_KEY')
@@ -242,3 +246,6 @@ SECURE_HSTS_SECONDS = 3_154_000  # ~1 año
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+
+

@@ -22,7 +22,7 @@
                 
                 <p class="mb-2"><span class="font-medium"> Topic: </span>{{ transcription.name }}</p>
                 <p class="mb-2" ><span class="font-medium">Description:</span> {{ transcription.description }}</p>
-                <p class="font-medium">Highlights to study:</p>
+                <p class="font-medium">Highlights:</p>
                 <ul class="mb-2">
                     {% for treatment in transcription.treatments.all %}
                     <li class="ml-2"> - {{ treatment.description }}</li>
@@ -65,7 +65,7 @@
                 <p class="font-medium font-Open-Sans text-green-600 mb-2 mt-2">TRANSCRIPTION</p>
                 <p class="mb-2">{{ transcription.transcription }}</p>
 
-                <a class="btn-danger" href="{% url 'transcription_delete' transcription.pk %}">Delete Case</a>
+                <a class="btn-danger" href="{% url 'transcription_delete' transcription.pk %}">Delete</a>
             </div>
             
                 

@@ -1,12 +1,42 @@
 {% extends 'dashboard/base.html' %}
-
+{% load static %}
 {% block content %}
-    <div class="container">
-
-        <div>
-            <h1 class='text-lg font-sans text-blue-900 font-black p-6'> Welcome to Student Assistant </h1>
-        <p> This is the home page for the Student Assistant </p>
+<div class="container flex flex-col mx-auto p-1 items-center justify-center px-2">
+    <div class="flex flex-col justify-center w-full  px6 py-3 my-4   rounded-3xl bg-blue-50 min-h-[30vh] md:min-h-[60vh]">
+        <h1 class="flex  justify-center font-bold text-xl md:text-3xl font-Open-Sans text-blue-600 text-center">Turn Your Voice into Organized Knowledge</h1>
+        <h2 class="flex justify-center font-Open-Sans text-center">Capture ideas through voice and let AI transform them into searchable, structured notes</h2>
+        <div class="flex justify-center m-2">
+            <a class="flex justify-center items-center gap-2 bg-green-500 w-45 pt-2 px-2 pb-2 h-10 rounded-3xl m-2 text-white  hover:bg-green-700 font-medium " href="{% url 'account:register' %}"> Start Now!</a>
         </div>
+            
+    
+   </div>  
+   <h2 class="font-bold text-xl md:text-3xl">Transform Every Task with AI</h2>
+   <div class="drop-shadow-lg rounded-3xl  mt-5 mb-5 ">
+        <img class="rounded-3xl" src="{% static 'images/hero.png'%}" alt="">
+   </div>
+    <!-- Three columns -->
+    <h2 class="font-bold text-xl md:text-3xl">Supercharge Your Work with AI</h2>
+    <div class="flex flex-row justify-center w-full  px6 py-3 mt-2  gap-4 h-[20vh] md:h-[40vh]">
+        
+        <div class="flex flex-col justify-center items-center w-1/2  bg-linear-to-tl from-[#7fd2ff] via-[#4A7EDD] to-[#3056CE]  rounded-3xl p-4 text-white">
+            <h3 class="font-medium text-md md:text-xl mb-2 ">Smart Transcription</h3>
+                <div class="text-sm text-center">
+            
+                <p>Accurate voice-to-text conversion</p>
+                
+                </div>
+        </div>
+        <div class="flex flex-col justify-center items-center w-1/2 bg-linear-to-tl from-[#B8A8FC] via-[#6748E6] to-[#572EFA]  rounded-3xl p-4 text-white">
+            <h3 class="font-medium text-md md:text-xl mb-2 ">AI-Powered Insights</h3>
+                <div class="text-sm text-center">
+            
+                <p>Automatic key points extraction and summary generation</p>
+                
+                </div>
+        </div>
+        
     </div>
+</div>
     
 {% endblock content %}  
