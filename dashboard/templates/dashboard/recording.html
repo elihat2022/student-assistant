@@ -10,6 +10,8 @@
         <div class="flex  justify-center items-center mt-3 mb-1">
             <label class="font-medium" for="name">Title:</label>
             <input class="ml-2 w-[80vh] rounded-2xl pl-2 bg-white h-8" type="text" id="subject_name" name="subject_name" placeholder="English Class">
+            <label class="font-medium" for="name">Tags:</label>
+            <input class="ml-2 w-[80vh] rounded-2xl pl-2 bg-white h-8" type="text" id="tag" name="tag" placeholder="english">
         </div>
 
         <div class="flex items-center justify-center mt-2 w-full" id="audioControls">
@@ -194,7 +196,8 @@
         const fileName = `recording-${Date.now()}.wav`;
 
         const subject_name = document.getElementById('subject_name').value;
-
+        const tags = document.getElementById('tag').value;
+        formData.append('tag', tags)
         formData.append('voice_input', audioBlob, fileName);
         formData.append('subject_name', subject_name);
         document.getElementById('result').textContent = '';

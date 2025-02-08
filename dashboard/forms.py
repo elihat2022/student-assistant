@@ -3,7 +3,7 @@ from django import forms
 from django.forms.models import inlineformset_factory
 
 from .models import Keywords, Subject, Transcription
-
+from taggit.managers import TaggableManager
 
 class PatientForm(forms.ModelForm):
     class Meta:
@@ -14,10 +14,10 @@ class PatientForm(forms.ModelForm):
 class MedicHistoryForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={"rows": 2}))
     subject_name = forms.CharField(max_length=100)
-
+   
     class Meta:
         model = Transcription
-        fields = ["subject_name", "name", "description"]
+        fields = ["subject_name", "name", "tags", "description"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -36,3 +36,12 @@ class TreatmentForm(forms.ModelForm):
 TreatmentFormSet = inlineformset_factory(
     Transcription, Keywords, form=TreatmentForm, extra=1, can_delete=True
 )
+
+
+# Search
+class SearchForm(forms.Form):
+    query = forms.CharField()
+    
+
+class TranscriptionFilter(forms.Form):
+    tag = TaggableManager()

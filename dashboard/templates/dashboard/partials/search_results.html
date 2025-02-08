@@ -1,23 +1,9 @@
-{% extends 'dashboard/base.html'%}
-
-{% block title %}
-Transcription List
-{% endblock %}
-
-{% block content %}
-<div class="container mx-auto p-1 flex flex-col items-center justify-center">
-    <div class=" flex flex-col  p-4  my-4 mx-2  w-full  justify-between rounded-3xl bg-blue-50">
-        <h1 class=" font-medium   font-Open-Sans text-blue-600">TRANSCRIPTION LIST</h1>
-        <section>
-            {% include 'dashboard/partials/search.html' %}
-        </section>
-
-
-        <table class="w-full mt-4 text-left table-auto min-w-max rounded-3xl">
+{% if results %}
+<table class="w-full mt-4 text-left table-auto min-w-max rounded-3xl">
+            {% csrf_token %}
             <thead >
                 <tr >
                     <th class="justify-center p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 ">Subject</th>
-                    <th class="justify-center p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 ">Tags</th>
                     <!-- <th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">Audio</th>
                     <th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">Created on</th> -->
                     <th class="justify-center p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">View Details</th>
@@ -25,12 +11,9 @@ Transcription List
                 </tr>
             </thead>
             <tbody class="bg-white">
-                {% for transcription in transcription_list %}
+                {% for transcription in results %}
                 <tr>
                     <td class="p-4 border-b border-slate-200">{{ transcription.subject }}</td>
-                    <!--- <td class="p-4 border-b border-slate-200"> <a href="{{ transcription.audio.url }}"> <span class="material-symbols-outlined">play_circle</span> -->
-                    </td>
-                    <td class="p-4 border-b border-slate-200">{{ transcription.tags.all|join:', ' }}</td>
                     <!--- <td class="p-4 border-b border-slate-200"> <a href="{{ transcription.audio.url }}"> <span class="material-symbols-outlined">play_circle</span> -->
                     </td>
                     <!-- <td class="p-4 border-b border-slate-200">{{ transcription.created }}</td> -->
@@ -45,7 +28,6 @@ Transcription List
                 {% endfor %}
             </tbody>
         </table>
-    </div>
-    
-</div>
-{% endblock %}
+{% else %}
+<h3 class="flex justify-end">Not results found</h3>
+{% endif %}

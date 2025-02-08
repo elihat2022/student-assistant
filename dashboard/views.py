@@ -11,10 +11,22 @@ from django.views.generic import DeleteView, DetailView, ListView
 from django.views.generic.edit import UpdateView
 from openai import OpenAI
 
-from .forms import MedicHistoryForm, Subject, TreatmentFormSet
+from .forms import (
+    MedicHistoryForm,
+    Subject,
+    TreatmentFormSet,
+    SearchForm,
+    TranscriptionFilter,
+)
 from .models import Subject, Transcription
 from .tasks import transcribe_audio
 from django_ratelimit.decorators import ratelimit
+from django.views.decorators.http import require_http_methods
+#Search
+from django.contrib.postgres.search import (
+    SearchVector)
+from django.contrib.postgres.search import TrigramSimilarity
+from django.db.models.functions import Greatest
 
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
@@ -36,6 +48,7 @@ def Record_View(request):
 
 def handle_post_request(request):
     subject_name = request.POST.get("subject_name")
+    tags = request.POST.get("tag")
 
     if not subject_name:
         return JsonResponse({"error": "Subject name is required"}, status=400)
@@ -46,16 +59,16 @@ def handle_post_request(request):
         return JsonResponse({"error": "No file uploaded"}, status=400)
 
     audio_file = request.FILES["voice_input"]
-    doctor_id = request.user.id
+    user_id = request.user.id
 
     # Retrieve the Doctor instance using the doctor_id
     try:
-        student_instance = Student.objects.get(user_id=doctor_id)
+        student_instance = Student.objects.get(user_id=user_id)
     except Student.DoesNotExist:
         return JsonResponse({"error": "Student not found"}, status=404)
 
     audio_instance = Transcription.objects.create(
-        audio=audio_file, subject=subject_instance, student=student_instance
+        audio=audio_file, subject=subject_instance, student=student_instance, tags=tags
     )
     
     audio_url = audio_instance.audio.url  # Obtener la URL del archivo
@@ -78,7 +91,7 @@ class Transcription_List(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         student = self.request.user.student
-
+        
         return Transcription.objects.filter(student=student)
 
 
@@ -141,3 +154,32 @@ class DeleteTranscription(LoginRequiredMixin, DeleteView):
     model = Transcription
     template_name = "dashboard/transcription/transcription_delete.html"
     success_url = reverse_lazy("transcriptions")
+
+
+@require_http_methods(["GET"])
+def transcription_search(request):
+    search_text = request.GET.get('search', '').strip()
+    if search_text:
+        results = (
+            Transcription.objects.annotate(
+                subject_similarity=TrigramSimilarity(
+                    "subject__subject_name", search_text
+                ),
+                # Si tags es un campo TextField o CharField
+                description_similarity=TrigramSimilarity("description", search_text),
+                similarity=Greatest(
+                    "subject_similarity",
+                    "description_similarity",
+                ),
+            )
+            .filter(similarity__gt=0.3)
+            .order_by("-similarity")
+        )
+    else:
+        results = []
+    
+    return render(
+        request,
+        "dashboard/partials/search_results.html",
+        context={'results': results}
+    )
