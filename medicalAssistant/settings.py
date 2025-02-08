@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Configuración básica
 SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = True
+DEBUG = False
 
 
     
@@ -102,24 +102,24 @@ WSGI_APPLICATION = 'medicalAssistant.wsgi.application'
 #     }
 # }
 
-# # FOR PRODUCTION
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.getenv("PGDATABASE"),
-#         'USER': os.getenv("PGUSER"),
-#         'PASSWORD': os.getenv("PGPASSWORD"),
-#         'HOST': os.getenv("PGHOST"),
-#         'PORT': os.getenv("PGPORT"),
-#     }
-# }
-
-# FOR DEBUG
+# FOR PRODUCTION
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv("DATABASE_URL"), conn_max_age=500)
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv("PGDATABASE"),
+        'USER': os.getenv("PGUSER"),
+        'PASSWORD': os.getenv("PGPASSWORD"),
+        'HOST': os.getenv("PGHOST"),
+        'PORT': os.getenv("PGPORT"),
+    }
 }
+
+# # FOR DEBUG
+
+# DATABASES = {
+#     'default': dj_database_url.config(default=os.getenv("DATABASE_URL"), conn_max_age=500)
+# }
 
 
 
@@ -165,23 +165,23 @@ STATIC_ROOT = BASE_DIR / 'staticfiles/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# # FOR PRODUCTION
-# CLOUDFLARE_R2_BUCKET=os.getenv('CLOUDFLARE_R2_BUCKET')
-# CLOUDFLARE_R2_ACCESS_KEY=os.getenv('CLOUDFLARE_R2_ACCESS_KEY')
-# CLOUDFLARE_R2_SECRET_KEY=os.getenv('CLOUDFLARE_R2_SECRET_KEY')
-# CLOUDFLARE_R2_ENDPOINT=os.getenv('CLOUDFLARE_R2_ENDPOINT')
+# FOR PRODUCTION
+CLOUDFLARE_R2_BUCKET=os.getenv('CLOUDFLARE_R2_BUCKET')
+CLOUDFLARE_R2_ACCESS_KEY=os.getenv('CLOUDFLARE_R2_ACCESS_KEY')
+CLOUDFLARE_R2_SECRET_KEY=os.getenv('CLOUDFLARE_R2_SECRET_KEY')
+CLOUDFLARE_R2_ENDPOINT=os.getenv('CLOUDFLARE_R2_ENDPOINT')
 
-# # #Config R2
+# #Config R2
 
-# CLOUDFLARE_R2_CONFIG_OPTIONS = {
-#     "bucket_name":CLOUDFLARE_R2_BUCKET,
-#     "access_key":CLOUDFLARE_R2_ACCESS_KEY,
-#     "secret_key":CLOUDFLARE_R2_SECRET_KEY,
-#     "endpoint_url":CLOUDFLARE_R2_ENDPOINT,
-#     "default_acl": "public-read",
-#     "signature_version": "s3v4",
-#     "region_name": "auto",
-# }
+CLOUDFLARE_R2_CONFIG_OPTIONS = {
+    "bucket_name":CLOUDFLARE_R2_BUCKET,
+    "access_key":CLOUDFLARE_R2_ACCESS_KEY,
+    "secret_key":CLOUDFLARE_R2_SECRET_KEY,
+    "endpoint_url":CLOUDFLARE_R2_ENDPOINT,
+    "default_acl": "public-read",
+    "signature_version": "s3v4",
+    "region_name": "auto",
+}
 
 # AWS_BUCKET =config('AWS_BUCKET')
 # AWS_ACCESS_KEY =config('AWS_ACCESS_KEY')
@@ -198,16 +198,16 @@ MEDIA_URL = '/media/'
 # }
 
 
-# STORAGES = {
-#     "default":{
-#         "BACKEND": "helpers.cloudflare.storages.MediaFilesStorage",
-#         "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
-#     },
-#     "staticfiles":{
-#         "BACKEND": "helpers.cloudflare.storages.StaticFilesStorage",
-#         "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
-#     }
-# }
+STORAGES = {
+    "default":{
+        "BACKEND": "helpers.cloudflare.storages.MediaFilesStorage",
+        "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
+    },
+    "staticfiles":{
+        "BACKEND": "helpers.cloudflare.storages.StaticFilesStorage",
+        "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
+    }
+}
 
 
 
