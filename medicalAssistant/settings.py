@@ -115,7 +115,7 @@ DATABASES = {
     }
 }
 
-# # FOR DEBUG
+# FOR DEBUG
 
 # DATABASES = {
 #     'default': dj_database_url.config(default=os.getenv("DATABASE_URL"), conn_max_age=500)
@@ -198,16 +198,16 @@ CLOUDFLARE_R2_CONFIG_OPTIONS = {
 # }
 
 
-STORAGES = {
-    "default":{
-        "BACKEND": "helpers.cloudflare.storages.MediaFilesStorage",
-        "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
-    },
-    "staticfiles":{
-        "BACKEND": "helpers.cloudflare.storages.StaticFilesStorage",
-        "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
-    }
-}
+# STORAGES = {
+#     "default":{
+#         "BACKEND": "helpers.cloudflare.storages.MediaFilesStorage",
+#         "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
+#     },
+#     "staticfiles":{
+#         "BACKEND": "helpers.cloudflare.storages.StaticFilesStorage",
+#         "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
+#     }
+# }
 
 
 

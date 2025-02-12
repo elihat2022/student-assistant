@@ -1,0 +1,10 @@
+{% for transcription in transcription_list %}
+    <div class="transcription-item">
+        <h3>{{ transcription.subject.subject_name }}</h3>
+        <p>Tags: {{ transcription.tags.all|join:', ' }}</p>
+        <p>Created: {{ transcription.created }}</p>
+        <!-- Más detalles -->
+    </div>
+{% empty %}
+    <p>No transcriptions found matching your criteria.</p>
+{% endfor %}

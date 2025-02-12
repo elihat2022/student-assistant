@@ -90,8 +90,9 @@ class Transcription_List(LoginRequiredMixin, ListView):
     context_object_name = "transcription_list"
 
     def get_queryset(self):
-        student = self.request.user.student
         
+        student = self.request.user.student
+
         return Transcription.objects.filter(student=student)
 
 
