@@ -198,16 +198,16 @@ CLOUDFLARE_R2_CONFIG_OPTIONS = {
 # }
 
 
-# STORAGES = {
-#     "default":{
-#         "BACKEND": "helpers.cloudflare.storages.MediaFilesStorage",
-#         "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
-#     },
-#     "staticfiles":{
-#         "BACKEND": "helpers.cloudflare.storages.StaticFilesStorage",
-#         "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
-#     }
-# }
+STORAGES = {
+    "default":{
+        "BACKEND": "helpers.cloudflare.storages.MediaFilesStorage",
+        "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
+    },
+    "staticfiles":{
+        "BACKEND": "helpers.cloudflare.storages.StaticFilesStorage",
+        "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
+    }
+}
 
 
 
