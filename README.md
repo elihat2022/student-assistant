@@ -52,6 +52,7 @@ REPLICATE_API_TOKEN=your-replicate-token
 
 # Email (SendGrid)
 SENDGRID_API_KEY=your-sendgrid-key
+SENDGRID_SENDER_EMAIL=your-verified-sender-email
 
 # reCAPTCHA
 RECAPTCHA_PUBLIC_KEY=your-recaptcha-public-key
