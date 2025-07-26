@@ -72,7 +72,7 @@ RECAPTCHA_PRIVATE_KEY=your-recaptcha-private-key
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/elihat2022/student-assistant.git
    cd student-assistant
    ```
 
