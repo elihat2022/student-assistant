@@ -5,13 +5,13 @@ from django.forms.models import inlineformset_factory
 from .models import Keywords, Subject, Transcription
 from taggit.managers import TaggableManager
 
-class PatientForm(forms.ModelForm):
+class StudentForm(forms.ModelForm):
     class Meta:
         model = Subject
         fields = ["subject_name"]
 
 
-class MedicHistoryForm(forms.ModelForm):
+class VoiceNoteForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={"rows": 2}))
     subject_name = forms.CharField(max_length=100)
    
@@ -25,7 +25,7 @@ class MedicHistoryForm(forms.ModelForm):
             self.fields["subject_name"].initial = self.instance.subject.subject_name
 
 
-class TreatmentForm(forms.ModelForm):
+class DescriptionForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={"rows": 1}), label="")
 
     class Meta:
@@ -33,8 +33,8 @@ class TreatmentForm(forms.ModelForm):
         fields = ["description"]
 
 
-TreatmentFormSet = inlineformset_factory(
-    Transcription, Keywords, form=TreatmentForm, extra=1, can_delete=True
+DescriptionFormSet = inlineformset_factory(
+    Transcription, Keywords, form=DescriptionForm, extra=1, can_delete=True
 )
 
 

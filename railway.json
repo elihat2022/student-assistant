@@ -7,10 +7,11 @@
   "service": {
     "web": {
       "dockerfilePath": "Dockerfile",
-      "startCommand": "gunicorn --bind 0.0.0.0:$PORT medicalAssistant.wsgi:application"
+      "startCommand": "gunicorn --bind 0.0.0.0:$PORT studentAssistant.wsgi:application"
     },
     "worker": {
-   "dockerfilePath": "Dockerfile.celery",
-   "startCommand": "celery -A medicalAssistant worker --loglevel=info"}
+      "dockerfilePath": "Dockerfile.celery",
+      "startCommand": "celery -A studentAssistant worker --loglevel=info"
+    }
   }
 }

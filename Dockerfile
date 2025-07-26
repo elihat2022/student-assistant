@@ -21,4 +21,4 @@ ENV PORT=8080
 EXPOSE $PORT
 
 # Fix the CMD line
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "medicalAssistant.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "studentAssistant.wsgi:application"]

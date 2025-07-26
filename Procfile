@@ -1,1 +1,1 @@
-web: gunicorn medicalAssistant.wsgi
+web: gunicorn studentAssistant.wsgi

@@ -20,7 +20,7 @@ USER celery
 
 # HEALTHCHECK para evitar que Railway lo reinicie
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s \
-  CMD celery -A medicalAssistant inspect ping || exit 1
+  CMD celery -A studentAssistant inspect ping || exit 1
 
 # Ejecutar Celery con menos carga
-CMD ["celery", "-A", "medicalAssistant", "worker", "--loglevel=info", "--concurrency=4"]
+CMD ["celery", "-A", "studentAssistant", "worker", "--loglevel=info", "--concurrency=4"]

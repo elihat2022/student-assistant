@@ -12,9 +12,9 @@ from django.views.generic.edit import UpdateView
 from openai import OpenAI
 
 from .forms import (
-    MedicHistoryForm,
+    VoiceNoteForm,
     Subject,
-    TreatmentFormSet,
+    DescriptionFormSet,
     SearchForm,
     TranscriptionFilter,
 )
@@ -118,7 +118,7 @@ class Transcription_Detail(LoginRequiredMixin, DetailView):
 
 class UpdateTranscriptionDetail(LoginRequiredMixin, UpdateView):
     model = Transcription
-    form_class = MedicHistoryForm
+    form_class = VoiceNoteForm
     template_name = "dashboard/transcription/transcription_update.html"
 
     def get_success_url(self):
@@ -127,11 +127,11 @@ class UpdateTranscriptionDetail(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.POST:
-            context["treatment_formset"] = TreatmentFormSet(
+            context["treatment_formset"] = DescriptionFormSet(
                 self.request.POST, instance=self.object
             )
         else:
-            context["treatment_formset"] = TreatmentFormSet(instance=self.object)
+            context["treatment_formset"] = DescriptionFormSet(instance=self.object)
         return context
 
     def form_valid(self, form):

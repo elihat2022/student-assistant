@@ -15,5 +15,5 @@ class Subject_Case_Admin(admin.ModelAdmin):
 
 
 @admin.register(Keywords)
-class Treatment_Admin(admin.ModelAdmin):
+class Transcription_Admin(admin.ModelAdmin):
     list_display = ["transcription_record"]

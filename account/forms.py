@@ -8,7 +8,7 @@ from django_recaptcha.fields import ReCaptchaField
 from .models import Student
 
 
-class DoctorForm(UserCreationForm):
+class StudentForm(UserCreationForm):
     
     # captcha
     captcha = ReCaptchaField(
